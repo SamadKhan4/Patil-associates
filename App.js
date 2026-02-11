@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
@@ -135,8 +135,12 @@ function MainTabs() {
           backgroundColor: '#fff',
           borderTopWidth: 1,
           borderTopColor: '#e9ecef',
-          paddingBottom: 5,
+          paddingBottom: Platform.OS === 'ios' ? 5 : 0,
           paddingTop: 5,
+          height: Platform.OS === 'ios' ? 80 : 60,
+        },
+        tabBarItemStyle: {
+          paddingVertical: Platform.OS === 'ios' ? 5 : 0,
         },
       })}
     >
@@ -146,7 +150,7 @@ function MainTabs() {
         options={{ 
           tabBarLabel: 'Home',
           tabBarLabelStyle: {
-            fontSize: 12,
+            fontSize: Platform.OS === 'ios' ? 12 : 10,
             fontWeight: '600',
           },
           tabBarIcon: ({ color, size }) => (
@@ -160,7 +164,7 @@ function MainTabs() {
         options={{ 
           tabBarLabel: 'Search',
           tabBarLabelStyle: {
-            fontSize: 12,
+            fontSize: Platform.OS === 'ios' ? 12 : 10,
             fontWeight: '600',
           },
           tabBarIcon: ({ color, size }) => (
@@ -174,7 +178,7 @@ function MainTabs() {
         options={{ 
           tabBarLabel: 'Bookings',
           tabBarLabelStyle: {
-            fontSize: 12,
+            fontSize: Platform.OS === 'ios' ? 12 : 10,
             fontWeight: '600',
           },
           tabBarIcon: ({ color, size }) => (
@@ -188,7 +192,7 @@ function MainTabs() {
         options={{ 
           tabBarLabel: 'Profile',
           tabBarLabelStyle: {
-            fontSize: 12,
+            fontSize: Platform.OS === 'ios' ? 12 : 10,
             fontWeight: '600',
           },
           tabBarIcon: ({ color, size }) => (
@@ -214,6 +218,7 @@ function AuthWrapper() {
   if (isLoading) {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <Text>Loading...</Text>
       </View>
     );
@@ -221,6 +226,7 @@ function AuthWrapper() {
 
   return (
     <NavigationContainer>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       <Stack.Navigator>
         {isLoggedIn ? (
           <Stack.Group screenOptions={{ headerShown: false }}>

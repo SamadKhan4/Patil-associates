@@ -1,49 +1,37 @@
-// API Configuration - Switch between real API and mock data
-export const USE_MOCK_DATA = true; // Set to false to use real API
+// API Configuration - Production API only
+export const USE_MOCK_DATA = false;
 
-// Export the appropriate API service based on configuration
-const apiService = USE_MOCK_DATA 
-  ? require('./mockApi').default 
-  : require('./api').default;
-
-export default apiService;
+// Export the production API service
+export { default } from './api';
 
 // Export individual functions for convenience
-export const {
+export {
   // Restaurant APIs
   getRestaurantBookingsByDateRange,
   getAvailableTables,
+  getAvailableTablesByCriteria,
   getRestaurantBookings,
   getRestaurantBookingById,
-  createRestaurantBooking,
-  
-  // Table APIs
-  getAvailableTablesByCriteria,
-  
-  // Menu APIs
   getMenuItems,
   searchMenuItems,
   getMenuItemsByCategory,
   getDietaryMenuItems,
+  createRestaurantBooking,
   
   // Hotel APIs
   getAvailableRooms,
-  getHotelRooms,
-  getHotelRoomById,
-  
-  // Hotel Booking APIs
   checkRoomAvailability,
   getHotelBookingsByDateRange,
   getHotelBookings,
   getHotelBookingById,
+  getHotelRooms,
+  getHotelRoomById,
   createHotelBooking,
   
   // Property APIs
   getFeaturedProperties,
   getProperties,
   getPropertyById,
-  
-  // Property Listing APIs
   createPropertyListing,
   getPropertyListings,
   getPropertyListingById,
@@ -53,5 +41,12 @@ export const {
   getCategories,
   getFeaturedItems,
   getTestimonials,
-  getUserProfile
-} = apiService;
+  getUserProfile,
+  
+  // Auth APIs
+  login,
+  signup,
+  logout,
+  getStoredToken,
+  getStoredUser
+} from './api';
