@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AP-app",
-    "slug": "AP-app",
+    "name": "Patil Associates Booking App",
+    "slug": "patil-assoc-bookings",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
