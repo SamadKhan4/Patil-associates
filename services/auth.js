@@ -1,9 +1,128 @@
 // Auth service for handling user authentication
 const BASE_URL = 'https://api.patilassociates.in/api'; // Update this to your actual backend URL
 
+// Import mock data for demo mode
+import { demoUsers } from './demoData';
+import { USE_MOCK_DATA } from './apiConfig';
+
+// Generic API call helper
+const apiCall = async (endpoint, options = {}) => {
+  const url = `${BASE_URL}${endpoint}`;
+  
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+    ...options,
+  };
+
+  try {
+    const response = await fetch(url, config);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`API call failed: ${url}`, error);
+    throw error;
+  }
+};
+
+// Mock authentication functions
+const mockLogin = async (email, password) => {
+  await new Promise(resolve => setTimeout(resolve, 800)); // Simulate network delay
+  
+  const user = demoUsers.find(u => u.email === email);
+  
+  if (!user) {
+    return {
+      success: false,
+      message: "User not found"
+    };
+  }
+  
+  // Simple password check for demo (in real app, this should be hashed)
+  if (password !== "password123") {
+    return {
+      success: false,
+      message: "Invalid password"
+    };
+  }
+  
+  const token = `demo_token_${user.id}_${Date.now()}`;
+  const userData = {
+    id: user.id,
+    fullName: user.fullName,
+    email: user.email,
+    phone: user.phone,
+    roles: ["customer"]
+  };
+  
+  // Store token and user data
+  await storeToken(token);
+  await storeUser(userData);
+  
+  return {
+    success: true,
+    message: "Login successful",
+    token,
+    user: userData
+  };
+};
+
+const mockSignup = async (fullName, email, password, phoneNo) => {
+  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+  
+  const existingUser = demoUsers.find(u => u.email === email);
+  
+  if (existingUser) {
+    return {
+      success: false,
+      message: "User with this email already exists"
+    };
+  }
+  
+  const newUser = {
+    id: demoUsers.length + 1,
+    fullName,
+    email,
+    phone: phoneNo,
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200",
+    membership: "Silver",
+    preferences: {
+      cuisine: ["Indian"],
+      priceRange: "$$",
+      location: "Default"
+    }
+  };
+  
+  const token = `demo_token_${newUser.id}_${Date.now()}`;
+  const userData = {
+    id: newUser.id,
+    fullName: newUser.fullName,
+    email: newUser.email,
+    phone: newUser.phone,
+    roles: ["customer"]
+  };
+  
+  // Store token and user data
+  await storeToken(token);
+  await storeUser(userData);
+  
+  return {
+    success: true,
+    message: "Account created successfully",
+    token,
+    user: userData
+  };
+};
+
 // Login function
 export const login = async (email, password) => {
   try {
+    if (USE_MOCK_DATA) {
+      return await mockLogin(email, password);
+    }
+    
     const response = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
@@ -14,7 +133,7 @@ export const login = async (email, password) => {
 
     const data = await response.json();
     
-    // Store the token in async storage (implement this in your app)
+    // Store the token in async storage
     if (data.success && data.token) {
       await storeToken(data.token);
       await storeUser(data.user);
@@ -30,6 +149,10 @@ export const login = async (email, password) => {
 // Signup function
 export const signup = async (fullName, email, password, phoneNo) => {
   try {
+    if (USE_MOCK_DATA) {
+      return await mockSignup(fullName, email, password, phoneNo);
+    }
+    
     const response = await fetch(`${BASE_URL}/auth/signup`, {
       method: 'POST',
       headers: {
