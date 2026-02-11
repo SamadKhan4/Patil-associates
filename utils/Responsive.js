@@ -31,6 +31,10 @@ export const isLargeDevice = SCREEN_WIDTH >= 414;
 export const isTablet = SCREEN_WIDTH >= 768;
 export const isPhone = SCREEN_WIDTH < 768;
 
+// Orientation detection
+export const isPortrait = SCREEN_HEIGHT > SCREEN_WIDTH;
+export const isLandscape = SCREEN_WIDTH > SCREEN_HEIGHT;
+
 // Safe area insets
 export const getStatusBarHeight = () => {
   if (Platform.OS === 'android') {
@@ -59,6 +63,35 @@ export const responsiveWidth = (percentage) => {
 
 export const responsiveHeight = (percentage) => {
   return SCREEN_HEIGHT * (percentage / 100);
+};
+
+// Grid system for responsive layouts
+export const getGridColumns = () => {
+  if (isTablet) return 3;
+  if (isLargeDevice) return 2;
+  return 1;
+};
+
+export const getColumnWidth = (columns = 1, gap = 16) => {
+  const totalGap = gap * (columns - 1);
+  return (SCREEN_WIDTH - (responsivePadding(20) * 2) - totalGap) / columns;
+};
+
+// Responsive breakpoints
+export const BREAKPOINTS = {
+  xs: 320,
+  sm: 375,
+  md: 414,
+  lg: 768,
+  xl: 1024
+};
+
+export const getDeviceType = () => {
+  if (SCREEN_WIDTH < BREAKPOINTS.sm) return 'xs';
+  if (SCREEN_WIDTH < BREAKPOINTS.md) return 'sm';
+  if (SCREEN_WIDTH < BREAKPOINTS.lg) return 'md';
+  if (SCREEN_WIDTH < BREAKPOINTS.xl) return 'lg';
+  return 'xl';
 };
 
 // Export screen dimensions

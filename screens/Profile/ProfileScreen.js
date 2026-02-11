@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getStoredUser } from '../../services/auth';
-import { logout } from '../../services/auth';
+import { useAuth } from '../../contexts/AuthContext';
 
 const ProfileScreen = ({ navigation }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { logout } = useAuth();
 
   useEffect(() => {
     loadUserProfile();
@@ -38,9 +39,10 @@ const ProfileScreen = ({ navigation }) => {
           onPress: async () => {
             try {
               await logout();
-              // Navigation will be handled by AuthContext
+              // Navigation will be handled automatically by AuthContext
             } catch (error) {
               console.error('Logout error:', error);
+              Alert.alert('Error', 'Failed to logout. Please try again.');
             }
           },
         },

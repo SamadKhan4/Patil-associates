@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, ActivityIndicator, RefreshControl, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, ActivityIndicator, RefreshControl, SafeAreaView, useWindowDimensions } from 'react-native';
 import { getRestaurantBookings, getHotelRooms, getProperties } from '../../services/api';
+import { scaleSize, scaleFont, responsivePadding, isSmallDevice, isTablet, getGridColumns } from '../../utils/Responsive';
+import { ResponsiveContainer, ResponsiveCard, ResponsiveGrid } from '../../components/ResponsiveComponents';
 
 const ListScreen = ({ route, navigation }) => {
   const { category } = route.params;
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     loadListings();
@@ -81,18 +84,56 @@ const ListScreen = ({ route, navigation }) => {
         rating = null;
     }
 
+    // Responsive layout - grid for tablets, list for phones
+    const useGrid = isTablet && category !== 'restaurant'; // Restaurant bookings better as list
+    const columns = useGrid ? 2 : 1;
+    const cardWidth = useGrid ? (width - responsivePadding(40) - 15) / 2 : width - responsivePadding(40);
+    const imageWidth = useGrid ? cardWidth : 120;
+    const imageHeight = useGrid ? 150 : 120;
+
     return (
       <TouchableOpacity
-        style={styles.listingCard}
+        style={[
+          styles.listingCard,
+          {
+            width: cardWidth,
+            marginBottom: useGrid ? 15 : 15,
+            flexDirection: useGrid ? 'column' : 'row',
+            marginRight: useGrid ? 15 : 0
+          }
+        ]}
         onPress={() => navigation.navigate('Detail', { id: item._id, type: category, item })}
         activeOpacity={0.8}
       >
-        <Image source={{ uri: imageUrl }} style={styles.listingImage} resizeMode="cover" />
-        <View style={styles.listingInfo}>
-          <Text style={styles.listingTitle} numberOfLines={1}>{title}</Text>
-          <Text style={styles.listingSubtitle} numberOfLines={1}>{subtitle}</Text>
-          <View style={styles.listingFooter}>
-            <Text style={styles.listingPrice}>{price}</Text>
+        <Image 
+          source={{ uri: imageUrl }} 
+          style={[styles.listingImage, { 
+            width: imageWidth, 
+            height: imageHeight,
+            borderTopLeftRadius: useGrid ? scaleSize(16) : scaleSize(16),
+            borderTopRightRadius: useGrid ? scaleSize(16) : 0,
+            borderBottomLeftRadius: useGrid ? 0 : scaleSize(16)
+          }]} 
+          resizeMode="cover" 
+        />
+        <View style={[styles.listingInfo, { 
+          padding: useGrid ? responsivePadding(12) : responsivePadding(15),
+          paddingTop: useGrid ? responsivePadding(12) : responsivePadding(15)
+        }]}>
+          <Text style={[styles.listingTitle, { 
+            fontSize: isSmallDevice ? 14 : 16,
+            marginBottom: useGrid ? 6 : 4
+          }]} numberOfLines={useGrid ? 2 : 1}>{title}</Text>
+          <Text style={[styles.listingSubtitle, { 
+            fontSize: isSmallDevice ? 12 : 14,
+            marginBottom: useGrid ? 8 : 8
+          }]} numberOfLines={useGrid ? 2 : 1}>{subtitle}</Text>
+          <View style={[styles.listingFooter, { 
+            marginTop: useGrid ? 8 : 0
+          }]}>
+            <Text style={[styles.listingPrice, { 
+              fontSize: isSmallDevice ? 14 : 16
+            }]}>{price}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -110,8 +151,14 @@ const ListScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>{getCategoryTitle()}</Text>
+      <View style={[styles.headerContainer, {
+        paddingHorizontal: responsivePadding(20),
+        paddingTop: isSmallDevice ? 15 : 20,
+        paddingBottom: isSmallDevice ? 12 : 15
+      }]}>
+        <Text style={[styles.header, {
+          fontSize: isSmallDevice ? 20 : 24
+        }]}>{getCategoryTitle()}</Text>
       </View>
       
       {loading ? (
@@ -124,16 +171,22 @@ const ListScreen = ({ route, navigation }) => {
           renderItem={renderListing}
           keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.listContainer}
+          contentContainerStyle={[styles.listContainer, {
+            padding: responsivePadding(20),
+            paddingBottom: responsivePadding(20)
+          }]}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
+          numColumns={isTablet && category !== 'restaurant' ? 2 : 1}
         />
       )}
       
       {!loading && listings.length === 0 && (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No {getCategoryTitle().toLowerCase()} found</Text>
+          <Text style={[styles.emptyText, {
+            fontSize: isSmallDevice ? 14 : 16
+          }]}>No {getCategoryTitle().toLowerCase()} found</Text>
         </View>
       )}
     </SafeAreaView>
@@ -146,15 +199,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8f9fa',
   },
   headerContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 15,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#e9ecef',
   },
   header: {
-    fontSize: 24,
     fontWeight: '700',
     color: '#2c3e50',
   },
@@ -164,15 +213,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   listContainer: {
-    padding: 20,
-    paddingBottom: 20,
   },
   listingCard: {
     backgroundColor: '#fff',
     borderRadius: 16,
     overflow: 'hidden',
-    marginBottom: 15,
-    flexDirection: 'row',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -183,24 +228,16 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   listingImage: {
-    width: 120,
-    height: 120,
   },
   listingInfo: {
-    flex: 1,
-    padding: 15,
     justifyContent: 'center',
   },
   listingTitle: {
-    fontSize: 16,
     fontWeight: '700',
     color: '#2c3e50',
-    marginBottom: 4,
   },
   listingSubtitle: {
-    fontSize: 14,
     color: '#6c757d',
-    marginBottom: 8,
   },
   listingFooter: {
     flexDirection: 'row',
@@ -208,7 +245,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   listingPrice: {
-    fontSize: 16,
     fontWeight: '700',
     color: '#28a745',
   },
@@ -219,7 +255,6 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   emptyText: {
-    fontSize: 16,
     color: '#6c757d',
     textAlign: 'center',
   },

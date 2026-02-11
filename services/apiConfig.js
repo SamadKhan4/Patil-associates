@@ -17,6 +17,7 @@ export {
   getMenuItemsByCategory,
   getDietaryMenuItems,
   createRestaurantBooking,
+  getFeaturedRestaurants,
   
   // Hotel APIs
   getAvailableRooms,
@@ -27,6 +28,7 @@ export {
   getHotelRooms,
   getHotelRoomById,
   createHotelBooking,
+  getFeaturedHotels,
   
   // Property APIs
   getFeaturedProperties,

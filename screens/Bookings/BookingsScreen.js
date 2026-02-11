@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { getRestaurantBookings, getHotelBookings } from '../../services/api';
 
 const BookingsScreen = ({ navigation }) => {
   const [bookings, setBookings] = useState([]);
@@ -16,19 +24,18 @@ const BookingsScreen = ({ navigation }) => {
   const loadBookings = async () => {
     setLoading(true);
     try {
-      // In a real app, you would fetch bookings from the API
-      // For now, using mock data
+      // 🔹 Mock Data (Replace with API later)
       const mockBookings = [
         {
           _id: '1',
           type: 'restaurant',
           title: 'Table Reservation',
-          subtitle: 'Restaurant Name',
+          subtitle: 'Spice Garden Restaurant',
           date: '2024-02-15',
           time: '19:30',
           status: 'confirmed',
           partySize: 4,
-          price: '₹2,500'
+          price: '₹2,500',
         },
         {
           _id: '2',
@@ -39,7 +46,7 @@ const BookingsScreen = ({ navigation }) => {
           checkOut: '2024-02-25',
           status: 'confirmed',
           guests: 2,
-          price: '₹12,000'
+          price: '₹12,000',
         },
         {
           _id: '3',
@@ -48,10 +55,10 @@ const BookingsScreen = ({ navigation }) => {
           subtitle: 'Luxury Villa, Goa',
           date: '2024-02-10',
           status: 'pending',
-          price: '₹2,50,00,000'
-        }
+          price: '₹2,50,00,000',
+        },
       ];
-      
+
       setBookings(mockBookings);
     } catch (error) {
       console.error('Error loading bookings:', error);
@@ -97,12 +104,17 @@ const BookingsScreen = ({ navigation }) => {
   const renderBooking = ({ item }) => (
     <TouchableOpacity
       style={styles.bookingCard}
-      onPress={() => navigation.navigate('Detail', { id: item._id, type: item.type })}
+      onPress={() => navigation?.navigate?.('Detail', { id: item._id, type: item.type })}
       activeOpacity={0.8}
     >
       <View style={styles.bookingHeader}>
         <View style={styles.bookingInfo}>
-          <Ionicons name={getIconByType(item.type)} size={24} color="#6c757d" style={styles.bookingIcon} />
+          <Ionicons
+            name={getIconByType(item.type)}
+            size={24}
+            color="#6c757d"
+            style={styles.bookingIcon}
+          />
           <View>
             <Text style={styles.bookingTitle}>{item.title}</Text>
             <Text style={styles.bookingSubtitle}>{item.subtitle}</Text>
@@ -110,12 +122,17 @@ const BookingsScreen = ({ navigation }) => {
         </View>
         <View style={styles.bookingDetailsRight}>
           <Text style={styles.bookingPrice}>{item.price}</Text>
-          <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status) }]}>
+          <View
+            style={[
+              styles.statusBadge,
+              { backgroundColor: getStatusColor(item.status) },
+            ]}
+          >
             <Text style={styles.statusText}>{item.status}</Text>
           </View>
         </View>
       </View>
-      
+
       <View style={styles.bookingDetails}>
         {item.date && (
           <View style={styles.detailItem}>
@@ -144,11 +161,13 @@ const BookingsScreen = ({ navigation }) => {
         {(item.partySize || item.guests) && (
           <View style={styles.detailItem}>
             <Text style={styles.detailLabel}>Guests:</Text>
-            <Text style={styles.detailValue}>{item.partySize || item.guests}</Text>
+            <Text style={styles.detailValue}>
+              {item.partySize || item.guests}
+            </Text>
           </View>
         )}
       </View>
-      
+
       <View style={styles.bookingFooter}>
         <TouchableOpacity style={styles.viewDetailsButton}>
           <Text style={styles.viewDetailsText}>View Details</Text>
@@ -180,20 +199,19 @@ const BookingsScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.tabsContainer}>
-        {tabs.map(tab => (
+        {tabs.map((tab) => (
           <TouchableOpacity
             key={tab.id}
-            style={[
-              styles.tab,
-              activeTab === tab.id && styles.activeTab
-            ]}
+            style={[styles.tab, activeTab === tab.id && styles.activeTab]}
             onPress={() => setActiveTab(tab.id)}
             activeOpacity={0.8}
           >
-            <Text style={[
-              styles.tabText,
-              activeTab === tab.id && styles.activeTabText
-            ]}>
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === tab.id && styles.activeTabText,
+              ]}
+            >
               {tab.label}
             </Text>
           </TouchableOpacity>
@@ -213,18 +231,21 @@ const BookingsScreen = ({ navigation }) => {
       ) : (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No bookings found</Text>
-          <Text style={styles.emptySubtext}>Your upcoming reservations will appear here</Text>
+          <Text style={styles.emptySubtext}>
+            Your upcoming reservations will appear here
+          </Text>
         </View>
       )}
     </SafeAreaView>
   );
 };
 
+export default BookingsScreen;
+
+// ================= STYLES =================
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
+  container: { flex: 1, backgroundColor: '#f8f9fa' },
   headerContainer: {
     paddingHorizontal: 20,
     paddingTop: 20,
@@ -233,11 +254,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e9ecef',
   },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#2c3e50',
-  },
+  headerTitle: { fontSize: 24, fontWeight: '700', color: '#2c3e50' },
   tabsContainer: {
     flexDirection: 'row',
     backgroundColor: '#fff',
@@ -245,85 +262,36 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e9ecef',
   },
-  tab: {
-    paddingVertical: 15,
-    paddingHorizontal: 12,
-    marginRight: 20,
-  },
-  activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#007AFF',
-  },
-  tabText: {
-    fontSize: 16,
-    color: '#6c757d',
-  },
-  activeTabText: {
-    color: '#007AFF',
-    fontWeight: '600',
-  },
-  listContainer: {
-    padding: 20,
-  },
+  tab: { paddingVertical: 15, paddingHorizontal: 12, marginRight: 20 },
+  activeTab: { borderBottomWidth: 2, borderBottomColor: '#007AFF' },
+  tabText: { fontSize: 16, color: '#6c757d' },
+  activeTabText: { color: '#007AFF', fontWeight: '600' },
+  listContainer: { padding: 20 },
   bookingCard: {
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,
     marginBottom: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.05,
-    shadowRadius: 3.84,
     elevation: 3,
   },
   bookingHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
     marginBottom: 12,
   },
-  bookingInfo: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    flex: 1,
-    marginRight: 15,
-  },
-  bookingIcon: {
-    marginRight: 12,
-    marginTop: 2,
-  },
-  bookingTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#2c3e50',
-    marginBottom: 4,
-  },
-  bookingSubtitle: {
-    fontSize: 14,
-    color: '#6c757d',
-  },
-  bookingDetailsRight: {
-    alignItems: 'flex-end',
-  },
-  bookingPrice: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#28a745',
-    marginBottom: 6,
-  },
+  bookingInfo: { flexDirection: 'row', flex: 1, marginRight: 15 },
+  bookingIcon: { marginRight: 12, marginTop: 2 },
+  bookingTitle: { fontSize: 18, fontWeight: '700', color: '#2c3e50' },
+  bookingSubtitle: { fontSize: 14, color: '#6c757d' },
+  bookingDetailsRight: { alignItems: 'flex-end' },
+  bookingPrice: { fontSize: 18, fontWeight: '700', color: '#28a745' },
   statusBadge: {
+    marginTop: 6,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 20,
   },
-  statusText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: '600',
-  },
+  statusText: { color: '#fff', fontSize: 12, fontWeight: '600' },
   bookingDetails: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -332,24 +300,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e9ecef',
   },
-  detailItem: {
-    marginRight: 15,
-    marginBottom: 8,
-  },
-  detailLabel: {
-    fontSize: 12,
-    color: '#6c757d',
-    marginBottom: 2,
-  },
-  detailValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#2c3e50',
-  },
-  bookingFooter: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
+  detailItem: { marginRight: 15, marginBottom: 8 },
+  detailLabel: { fontSize: 12, color: '#6c757d' },
+  detailValue: { fontSize: 14, fontWeight: '600', color: '#2c3e50' },
+  bookingFooter: { alignItems: 'flex-end' },
   viewDetailsButton: {
     backgroundColor: '#f8f9fa',
     paddingHorizontal: 16,
@@ -358,38 +312,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e9ecef',
   },
-  viewDetailsText: {
-    color: '#007AFF',
-    fontWeight: '600',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: '#6c757d',
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 50,
-  },
-  emptyText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#2c3e50',
-    marginBottom: 8,
-  },
-  emptySubtext: {
-    fontSize: 14,
-    color: '#6c757d',
-    textAlign: 'center',
-    paddingHorizontal: 20,
-  },
+  viewDetailsText: { color: '#007AFF', fontWeight: '600' },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  loadingText: { marginTop: 10, fontSize: 16, color: '#6c757d' },
+  emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  emptyText: { fontSize: 18, fontWeight: '700', color: '#2c3e50' },
+  emptySubtext: { fontSize: 14, color: '#6c757d', textAlign: 'center' },
 });
-
-export default BookingsScreen;

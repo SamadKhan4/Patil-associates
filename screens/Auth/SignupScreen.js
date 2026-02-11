@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { signup } from '../../services/auth';
+import { useAuth } from '../../contexts/AuthContext';
+import { scaleSize, scaleFont, responsivePadding } from '../../utils/Responsive';
 
 const SignupScreen = ({ navigation }) => {
   const [fullName, setFullName] = useState('');
@@ -94,18 +96,16 @@ const SignupScreen = ({ navigation }) => {
           
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Password</Text>
-            <View style={styles.passwordContainer}>
-              <View style={styles.inputContainer}>
-                <Ionicons name="lock-closed-outline" size={20} color="#6c757d" style={styles.inputIcon} />
-                <TextInput
-                  style={[styles.input, styles.passwordInput]}
-                  placeholder="Create a password"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={secureTextEntry}
-                  placeholderTextColor="#999"
-                />
-              </View>
+            <View style={styles.inputContainer}>
+              <Ionicons name="lock-closed-outline" size={20} color="#6c757d" style={styles.inputIcon} />
+              <TextInput
+                style={[styles.input, styles.passwordInput]}
+                placeholder="Create a password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={secureTextEntry}
+                placeholderTextColor="#999"
+              />
               <TouchableOpacity 
                 style={styles.togglePassword}
                 onPress={() => setSecureTextEntry(!secureTextEntry)}
@@ -207,6 +207,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#e9ecef',
+    paddingRight: 12,
   },
   inputIcon: {
     marginLeft: 12,
@@ -220,15 +221,12 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     color: '#2c3e50',
   },
-  passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   passwordInput: {
     flex: 1,
   },
   togglePassword: {
-    padding: 12,
+    padding: 8,
+    marginLeft: 8,
   },
   button: {
     backgroundColor: '#28a745',

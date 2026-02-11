@@ -452,7 +452,179 @@ export const getFeaturedProperties = async () => {
     return await apiCall('/properties/featured');
   } catch (error) {
     console.error('Get featured properties error:', error);
-    throw error;
+    // Return mock data as fallback
+    return {
+      success: true,
+      data: [
+        {
+          _id: '1',
+          title: 'Luxury Beach Villa',
+          description: 'Stunning beachfront property with private pool',
+          price: 25000000,
+          address: {
+            street: 'Beach Road',
+            city: 'Goa',
+            state: 'Goa'
+          },
+          bedrooms: 4,
+          bathrooms: 3,
+          area: 2500,
+          images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400'],
+          propertyType: 'Villa'
+        },
+        {
+          _id: '2',
+          title: 'Modern City Apartment',
+          description: 'Contemporary 2BHK in prime location',
+          price: 8500000,
+          address: {
+            street: 'Business District',
+            city: 'Mumbai',
+            state: 'Maharashtra'
+          },
+          bedrooms: 2,
+          bathrooms: 2,
+          area: 1200,
+          images: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400'],
+          propertyType: 'Apartment'
+        },
+        {
+          _id: '3',
+          title: 'Heritage Haveli',
+          description: 'Traditional Rajasthani palace with modern amenities',
+          price: 15000000,
+          address: {
+            street: 'Old City',
+            city: 'Jaipur',
+            state: 'Rajasthan'
+          },
+          bedrooms: 6,
+          bathrooms: 4,
+          area: 3500,
+          images: ['https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400'],
+          propertyType: 'Heritage'
+        }
+      ]
+    };
+  }
+};
+
+// Featured Hotels API
+export const getFeaturedHotels = async () => {
+  try {
+    // Public endpoint - no authentication required
+    return await apiCall('/hotels/featured');
+  } catch (error) {
+    console.error('Get featured hotels error:', error);
+    // Return mock data as fallback
+    return {
+      success: true,
+      data: [
+        {
+          _id: '1',
+          name: 'Grand Palace Hotel',
+          description: '5-star luxury hotel with premium amenities',
+          rating: 4.8,
+          pricePerNight: 8500,
+          address: {
+            city: 'Mumbai',
+            state: 'Maharashtra'
+          },
+          images: ['https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400'],
+          amenities: ['Swimming Pool', 'Spa', 'Restaurant', 'WiFi'],
+          roomTypes: ['Deluxe', 'Suite', 'Presidential']
+        },
+        {
+          _id: '2',
+          name: 'Seaside Resort',
+          description: 'Beach resort with private beach access',
+          rating: 4.6,
+          pricePerNight: 12000,
+          address: {
+            city: 'Goa',
+            state: 'Goa'
+          },
+          images: ['https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400'],
+          amenities: ['Private Beach', 'Water Sports', 'Infinity Pool', 'Spa'],
+          roomTypes: ['Ocean View', 'Beach Front', 'Suite']
+        },
+        {
+          _id: '3',
+          name: 'Mountain Retreat',
+          description: 'Peaceful hill station resort surrounded by nature',
+          rating: 4.7,
+          pricePerNight: 6500,
+          address: {
+            city: 'Manali',
+            state: 'Himachal Pradesh'
+          },
+          images: ['https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400'],
+          amenities: ['Mountain View', 'Adventure Activities', 'Spa', 'Restaurant'],
+          roomTypes: ['Standard', 'Deluxe', 'Cottage']
+        }
+      ]
+    };
+  }
+};
+
+// Featured Restaurants API
+export const getFeaturedRestaurants = async () => {
+  try {
+    // Public endpoint - no authentication required
+    return await apiCall('/restaurants/featured');
+  } catch (error) {
+    console.error('Get featured restaurants error:', error);
+    // Return mock data as fallback
+    return {
+      success: true,
+      data: [
+        {
+          _id: '1',
+          name: 'Royal Spice',
+          description: 'Premium Indian cuisine with royal ambiance',
+          rating: 4.9,
+          cuisineType: 'Indian',
+          priceRange: '₹₹₹₹',
+          address: {
+            city: 'Delhi',
+            state: 'Delhi'
+          },
+          images: ['https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400'],
+          specialties: ['North Indian', 'Mughlai', 'Fine Dining'],
+          timing: '12:00 PM - 11:30 PM'
+        },
+        {
+          _id: '2',
+          name: 'Ocean Breeze',
+          description: 'Seafood restaurant with ocean view',
+          rating: 4.7,
+          cuisineType: 'Seafood',
+          priceRange: '₹₹₹',
+          address: {
+            city: 'Goa',
+            state: 'Goa'
+          },
+          images: ['https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400'],
+          specialties: ['Fresh Seafood', 'Coastal Cuisine', 'Grill'],
+          timing: '10:00 AM - 11:00 PM'
+        },
+        {
+          _id: '3',
+          name: 'Urban Kitchen',
+          description: 'Modern fusion cuisine in contemporary setting',
+          rating: 4.6,
+          cuisineType: 'Fusion',
+          priceRange: '₹₹₹',
+          address: {
+            city: 'Bangalore',
+            state: 'Karnataka'
+          },
+          images: ['https://images.unsplash.com/photo-1554679665-f5537f187268?w=400'],
+          specialties: ['Asian Fusion', 'Continental', 'Craft Cocktails'],
+          timing: '11:00 AM - 12:00 AM'
+        }
+      ]
+    };
   }
 };
 
@@ -724,6 +896,7 @@ export default {
   getMenuItemsByCategory,
   getDietaryMenuItems,
   createRestaurantBooking,
+  getFeaturedRestaurants,
   // Hotel APIs
   getAvailableRooms,
   checkRoomAvailability,
@@ -733,6 +906,7 @@ export default {
   getHotelRooms,
   getHotelRoomById,
   createHotelBooking,
+  getFeaturedHotels,
   // Property APIs
   getFeaturedProperties,
   getProperties,
