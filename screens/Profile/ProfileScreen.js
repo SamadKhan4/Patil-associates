@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Alert, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { getStoredUser } from '../../services/auth';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -90,7 +91,10 @@ const ProfileScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             <View style={styles.menuItemContent}>
-              <Text style={styles.menuItemText}>Edit Profile</Text>
+              <View style={styles.menuItemLeft}>
+                <Ionicons name="person-outline" size={20} color="#6c757d" style={styles.menuItemIcon} />
+                <Text style={styles.menuItemText}>Edit Profile</Text>
+              </View>
               <Text style={styles.menuItemArrow}>›</Text>
             </View>
           </TouchableOpacity>
@@ -101,7 +105,10 @@ const ProfileScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             <View style={styles.menuItemContent}>
-              <Text style={styles.menuItemText}>My Bookings</Text>
+              <View style={styles.menuItemLeft}>
+                <Ionicons name="calendar-outline" size={20} color="#6c757d" style={styles.menuItemIcon} />
+                <Text style={styles.menuItemText}>My Bookings</Text>
+              </View>
               <Text style={styles.menuItemArrow}>›</Text>
             </View>
           </TouchableOpacity>
@@ -112,7 +119,10 @@ const ProfileScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             <View style={styles.menuItemContent}>
-              <Text style={styles.menuItemText}>Help & Support</Text>
+              <View style={styles.menuItemLeft}>
+                <Ionicons name="help-circle-outline" size={20} color="#6c757d" style={styles.menuItemIcon} />
+                <Text style={styles.menuItemText}>Help & Support</Text>
+              </View>
               <Text style={styles.menuItemArrow}>›</Text>
             </View>
           </TouchableOpacity>
@@ -123,7 +133,10 @@ const ProfileScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             <View style={styles.menuItemContent}>
-              <Text style={styles.menuItemText}>Privacy Policy</Text>
+              <View style={styles.menuItemLeft}>
+                <Ionicons name="lock-closed-outline" size={20} color="#6c757d" style={styles.menuItemIcon} />
+                <Text style={styles.menuItemText}>Privacy Policy</Text>
+              </View>
               <Text style={styles.menuItemArrow}>›</Text>
             </View>
           </TouchableOpacity>
@@ -134,7 +147,10 @@ const ProfileScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             <View style={styles.menuItemContent}>
-              <Text style={styles.menuItemText}>Terms of Service</Text>
+              <View style={styles.menuItemLeft}>
+                <Ionicons name="document-text-outline" size={20} color="#6c757d" style={styles.menuItemIcon} />
+                <Text style={styles.menuItemText}>Terms of Service</Text>
+              </View>
               <Text style={styles.menuItemArrow}>›</Text>
             </View>
           </TouchableOpacity>
@@ -240,6 +256,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 18,
     paddingHorizontal: 20,
+  },
+  menuItemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menuItemIcon: {
+    marginRight: 12,
   },
   menuItemText: {
     fontSize: 16,

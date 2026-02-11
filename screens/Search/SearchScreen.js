@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const SearchScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -9,9 +10,9 @@ const SearchScreen = ({ navigation }) => {
   ]);
 
   const categories = [
-    { id: 'restaurant', name: 'Restaurant & Bar', icon: '🍽️' },
-    { id: 'hotel', name: 'Hotels', icon: '🏨' },
-    { id: 'property', name: 'Properties', icon: '🏠' },
+    { id: 'restaurant', name: 'Restaurant & Bar', icon: 'restaurant' },
+    { id: 'hotel', name: 'Hotels', icon: 'bed' },
+    { id: 'property', name: 'Properties', icon: 'home' },
   ];
 
   const popularDestinations = [
@@ -45,8 +46,11 @@ const SearchScreen = ({ navigation }) => {
       onPress={() => setSelectedCategory(selectedCategory === item.id ? null : item.id)}
       activeOpacity={0.8}
     >
-      <Text style={styles.categoryIcon}>{item.icon}</Text>
-      <Text style={styles.categoryName}>{item.name}</Text>
+      <Ionicons name={item.icon} size={32} color={selectedCategory === item.id ? '#fff' : '#2c3e50'} />
+      <Text style={[
+        styles.categoryName,
+        selectedCategory === item.id && styles.selectedCategoryText
+      ]}>{item.name}</Text>
     </TouchableOpacity>
   );
 
@@ -79,7 +83,10 @@ const SearchScreen = ({ navigation }) => {
       }}
       activeOpacity={0.8}
     >
-      <Text style={styles.recentSearchText}>{item}</Text>
+      <View style={styles.recentSearchContent}>
+        <Ionicons name="time-outline" size={16} color="#6c757d" style={styles.recentSearchIcon} />
+        <Text style={styles.recentSearchText}>{item}</Text>
+      </View>
     </TouchableOpacity>
   );
 
@@ -226,15 +233,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
     borderColor: '#007AFF',
   },
-  categoryIcon: {
-    fontSize: 28,
-    marginBottom: 8,
-  },
   categoryName: {
     fontSize: 14,
     textAlign: 'center',
     color: '#2c3e50',
     fontWeight: '600',
+    marginTop: 8,
   },
   selectedCategoryText: {
     color: '#fff',
@@ -292,6 +296,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 3.84,
     elevation: 2,
+  },
+  recentSearchContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  recentSearchIcon: {
+    marginRight: 10,
   },
   recentSearchText: {
     fontSize: 16,

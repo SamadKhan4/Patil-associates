@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, Dimensions } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { getRestaurantBookingById, getHotelRoomById, getPropertyById } from '../../services/api';
 
 const { width } = Dimensions.get('window');

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const Card = ({ 
   title, 
@@ -21,7 +22,7 @@ const Card = ({
           {rating && (
             <View style={styles.ratingContainer}>
               <Text style={styles.ratingText}>{rating}</Text>
-              <Text style={styles.star}>⭐</Text>
+              <Ionicons name="star" size={14} color="#FFC107" />
             </View>
           )}
         </View>
@@ -82,9 +83,7 @@ const styles = StyleSheet.create({
     color: '#6c757d',
     marginRight: 4,
   },
-  star: {
-    fontSize: 14,
-  },
+
 });
 
 export default Card;

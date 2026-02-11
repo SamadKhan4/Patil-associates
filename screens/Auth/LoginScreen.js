@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { login } from '../../services/auth';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -51,35 +52,43 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.form}>
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              placeholderTextColor="#999"
-            />
+            <View style={styles.inputContainer}>
+              <Ionicons name="mail-outline" size={20} color="#6c757d" style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your email"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                placeholderTextColor="#999"
+              />
+            </View>
           </View>
           
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Password</Text>
             <View style={styles.passwordContainer}>
-              <TextInput
-                style={[styles.input, styles.passwordInput]}
-                placeholder="Enter your password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={secureTextEntry}
-                placeholderTextColor="#999"
-              />
+              <View style={styles.inputContainer}>
+                <Ionicons name="lock-closed-outline" size={20} color="#6c757d" style={styles.inputIcon} />
+                <TextInput
+                  style={[styles.input, styles.passwordInput]}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={secureTextEntry}
+                  placeholderTextColor="#999"
+                />
+              </View>
               <TouchableOpacity 
                 style={styles.togglePassword}
                 onPress={() => setSecureTextEntry(!secureTextEntry)}
               >
-                <Text style={styles.togglePasswordText}>
-                  {secureTextEntry ? 'Show' : 'Hide'}
-                </Text>
+                <Ionicons 
+                  name={secureTextEntry ? "eye-outline" : "eye-off-outline"} 
+                  size={20} 
+                  color="#6c757d" 
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -165,14 +174,24 @@ const styles = StyleSheet.create({
     color: '#2c3e50',
     marginBottom: 8,
   },
-  input: {
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#f8f9fa',
-    paddingVertical: 14,
-    paddingHorizontal: 16,
     borderRadius: 12,
-    fontSize: 16,
     borderWidth: 1,
     borderColor: '#e9ecef',
+  },
+  inputIcon: {
+    marginLeft: 12,
+    marginRight: 8,
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    borderWidth: 0,
     color: '#2c3e50',
   },
   passwordContainer: {
@@ -181,16 +200,9 @@ const styles = StyleSheet.create({
   },
   passwordInput: {
     flex: 1,
-    marginRight: 10,
   },
   togglePassword: {
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-  },
-  togglePasswordText: {
-    fontSize: 14,
-    color: '#007AFF',
-    fontWeight: '600',
+    padding: 12,
   },
   button: {
     backgroundColor: '#007AFF',

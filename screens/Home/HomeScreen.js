@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, ActivityIndicator, RefreshControl } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { getFeaturedProperties } from '../../services/api';
 
 const HomeScreen = ({ navigation }) => {
@@ -8,9 +9,9 @@ const HomeScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const categories = [
-    { id: 'restaurant', name: 'Restaurant & Bar', icon: '🍽️', color: '#FF6B6B' },
-    { id: 'hotel', name: 'Hotels', icon: '🏨', color: '#4ECDC4' },
-    { id: 'property', name: 'Properties', icon: '🏠', color: '#45B7D1' },
+    { id: 'restaurant', name: 'Restaurant & Bar', icon: 'restaurant', color: '#FF6B6B' },
+    { id: 'hotel', name: 'Hotels', icon: 'bed', color: '#4ECDC4' },
+    { id: 'property', name: 'Properties', icon: 'home', color: '#45B7D1' },
   ];
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const HomeScreen = ({ navigation }) => {
       onPress={() => navigation.navigate('List', { category: item.id })}
       activeOpacity={0.8}
     >
-      <Text style={styles.categoryIcon}>{item.icon}</Text>
+      <Ionicons name={item.icon} size={32} color="#fff" />
       <Text style={styles.categoryName}>{item.name}</Text>
     </TouchableOpacity>
   );
@@ -176,10 +177,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  categoryIcon: {
-    fontSize: 28,
-    marginBottom: 8,
-  },
+
   categoryName: {
     color: '#fff',
     fontWeight: '600',

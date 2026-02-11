@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Import screens
@@ -149,7 +150,7 @@ function MainTabs() {
             fontWeight: '600',
           },
           tabBarIcon: ({ color, size }) => (
-            <Text style={{ color, fontSize: 24 }}>🏠</Text>
+            <Ionicons name="home-outline" size={size} color={color} />
           ),
         }}
       />
@@ -163,7 +164,7 @@ function MainTabs() {
             fontWeight: '600',
           },
           tabBarIcon: ({ color, size }) => (
-            <Text style={{ color, fontSize: 24 }}>🔍</Text>
+            <Ionicons name="search-outline" size={size} color={color} />
           ),
         }}
       />
@@ -177,7 +178,7 @@ function MainTabs() {
             fontWeight: '600',
           },
           tabBarIcon: ({ color, size }) => (
-            <Text style={{ color, fontSize: 24 }}>📅</Text>
+            <Ionicons name="calendar-outline" size={size} color={color} />
           ),
         }}
       />
@@ -191,7 +192,7 @@ function MainTabs() {
             fontWeight: '600',
           },
           tabBarIcon: ({ color, size }) => (
-            <Text style={{ color, fontSize: 24 }}>👤</Text>
+            <Ionicons name="person-outline" size={size} color={color} />
           ),
         }}
       />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator, RefreshControl } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { getRestaurantBookings, getHotelBookings } from '../../services/api';
 
 const BookingsScreen = ({ navigation }) => {
@@ -83,13 +84,13 @@ const BookingsScreen = ({ navigation }) => {
   const getIconByType = (type) => {
     switch (type) {
       case 'restaurant':
-        return '🍽️';
+        return 'restaurant';
       case 'hotel':
-        return '🏨';
+        return 'bed';
       case 'property':
-        return '🏠';
+        return 'home';
       default:
-        return '📅';
+        return 'calendar';
     }
   };
 
@@ -101,7 +102,7 @@ const BookingsScreen = ({ navigation }) => {
     >
       <View style={styles.bookingHeader}>
         <View style={styles.bookingInfo}>
-          <Text style={styles.bookingIcon}>{getIconByType(item.type)}</Text>
+          <Ionicons name={getIconByType(item.type)} size={24} color="#6c757d" style={styles.bookingIcon} />
           <View>
             <Text style={styles.bookingTitle}>{item.title}</Text>
             <Text style={styles.bookingSubtitle}>{item.subtitle}</Text>
@@ -291,7 +292,6 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   bookingIcon: {
-    fontSize: 24,
     marginRight: 12,
     marginTop: 2,
   },
